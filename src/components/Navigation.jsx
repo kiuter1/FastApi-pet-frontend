@@ -4,6 +4,8 @@ import { AppstoreOutlined, SettingOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import AddTour from "./AddTour.jsx";
 import Card from "./Card.jsx";
+import Users from "./Users.jsx";
+import Orders from "./Orders.jsx";
 const items = [
     {
         key: 'sub1',
@@ -117,9 +119,9 @@ const Navigation = () => {
             case '2':
                 return <Card/> ;
             case '5':
-                return <div>Content for "Option 5"</div>;
+                return <Users/>;
             case '6':
-                return <div>Content for "Option 6"</div>;
+                return <Orders/>;
             case '7':
                 return <div>Content for "Option 7"</div>;
             case '8':

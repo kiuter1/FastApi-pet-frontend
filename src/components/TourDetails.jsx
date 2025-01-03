@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Card, Carousel, Button, Modal, message, Form, Input, InputNumber } from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { AuthContext } from "../contexts/AuthContext.jsx";
+import {useNavigate} from "react-router-dom";
 
 const { Meta } = Card;
 
@@ -10,7 +11,7 @@ const TourDetails = ({ tour, onBack }) => {
     const hasPhotos = tour.photos && tour.photos.length > 0;
     const { user, deleteTour, token, editedTour, addedOrder } = useContext(AuthContext);
     const [isAdmin, setIsAdmin] = useState(null);
-
+    const navigate = useNavigate();
     useEffect(() => {
         if (user) {
             setIsAdmin(user["is_admin"]);
@@ -105,75 +106,85 @@ const TourDetails = ({ tour, onBack }) => {
     };
 
     const handleBuyTour = () => {
-        let modal;
+        if (!token) { // Проверяем, авторизован ли пользователь
+            Modal.warning({
+                title: 'You need to log in!',
+                content: 'To purchase this tour, please log in to your account.',
+                onOk: () => {
+                    navigate('/login'); // Перенаправляем на страницу входа
+                },
+            });
+        } else {
+            let modal;
 
-        modal = Modal.info({
-            title: `Buy Tour "${tour.name}"`,
-            content: (
-                <Form
-                    name="buyTour"
-                    labelCol={{ span: 8 }}
-                    wrapperCol={{ span: 16 }}
-                    onFinish={async (values) => {
-                        try {
-                            await addedOrder(values.fullName, values.contact, values.people, values.comments, tour.id);
-                            message.success(`You have successfully purchased the tour "${tour.name}"!`);
-                            modal.destroy(); // Закрыть модальное окно
-                        } catch (error) {
-                            message.error("Failed to complete the purchase.");
-                        }
-                    }}
-                    onFinishFailed={(errorInfo) => {
-                        console.log("Failed:", errorInfo);
-                    }}
-                >
-                    <Form.Item
-                        label="Full Name"
-                        name="fullName"
-                        rules={[{ required: true, message: 'Please enter your name!' }]}
+            modal = Modal.info({
+                title: `Buy Tour "${tour.name}"`,
+                content: (
+                    <Form
+                        name="buyTour"
+                        labelCol={{ span: 8 }}
+                        wrapperCol={{ span: 16 }}
+                        onFinish={async (values) => {
+                            try {
+                                await addedOrder(values.fullName, values.contact, values.people, values.comments, tour.id);
+                                message.success(`You have successfully purchased the tour "${tour.name}"!`);
+                                modal.destroy(); // Закрыть модальное окно
+                            } catch (error) {
+                                message.error("Failed to complete the purchase.");
+                            }
+                        }}
+                        onFinishFailed={(errorInfo) => {
+                            console.log("Failed:", errorInfo);
+                        }}
                     >
-                        <Input />
-                    </Form.Item>
-
-                    <Form.Item
-                        label="Contact Info"
-                        name="contact"
-                        rules={[{ required: true, message: 'Please enter your contact information!' }]}
-                    >
-                        <Input />
-                    </Form.Item>
-
-                    <Form.Item
-                        label="Number of People"
-                        name="people"
-                        rules={[{ required: true, message: 'Please enter the number of people!' }]}
-                    >
-                        <InputNumber min={1} />
-                    </Form.Item>
-
-                    <Form.Item
-                        label="Comments"
-                        name="comments"
-                    >
-                        <Input.TextArea rows={4} />
-                    </Form.Item>
-
-                    <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                        <Button type="primary" htmlType="submit">
-                            Confirm Purchase
-                        </Button>
-                        <Button
-                            style={{ marginLeft: '10px' }}
-                            onClick={() => modal.destroy()} // Закрыть модальное окно
+                        <Form.Item
+                            label="Full Name"
+                            name="fullName"
+                            rules={[{ required: true, message: 'Please enter your name!' }]}
                         >
-                            Cancel
-                        </Button>
-                    </Form.Item>
-                </Form>
-            ),
-            okButtonProps: { style: { display: 'none' } }, // Убираем стандартную кнопку OK
-        });
-    };
+                            <Input />
+                        </Form.Item>
+
+                        <Form.Item
+                            label="Contact Info"
+                            name="contact"
+                            rules={[{ required: true, message: 'Please enter your contact information!' }]}
+                        >
+                            <Input />
+                        </Form.Item>
+
+                        <Form.Item
+                            label="Number of People"
+                            name="people"
+                            rules={[{ required: true, message: 'Please enter the number of people!' }]}
+                        >
+                            <InputNumber min={1} />
+                        </Form.Item>
+
+                        <Form.Item
+                            label="Comments"
+                            name="comments"
+                        >
+                            <Input.TextArea rows={4} />
+                        </Form.Item>
+
+                        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                            <Button type="primary" htmlType="submit">
+                                Confirm Purchase
+                            </Button>
+                            <Button
+                                style={{ marginLeft: '10px' }}
+                                onClick={() => modal.destroy()} // Закрыть модальное окно
+                            >
+                                Cancel
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                ),
+                okButtonProps: { style: { display: 'none' } }, // Убираем стандартную кнопку OK
+            });
+        };
+    }
 
     const handleDelete = async () => {
         Modal.confirm({

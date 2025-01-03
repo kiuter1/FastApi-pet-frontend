@@ -104,4 +104,79 @@ const addOrder = async (userData) => {
 }
 
 
-export { loginUser, registerUser, fetchUserProfile, addTour, getTours, delTour, editTour, addOrder };
+const getUsers  = async (userData) => {
+    try{
+        const response = await axios.get(`${API_URL}/user/admin/users`,{
+            headers: {
+                Authorization: `Bearer ${userData.token}`
+            }
+        })
+        return  response.data
+    }
+    catch (error) {
+        console.error("get user error:", error);
+        throw error;
+    }
+}
+
+
+const toggleAdminApi = async (userData) => {
+    try{
+        await axios.post(`${API_URL}/user/admin/change_user`, userData,{
+            headers: {
+                Authorization: `Bearer ${userData.token}`
+            }
+        });
+    }
+    catch (error) {
+        console.error("Change user error:", error);
+        throw error;
+    }
+}
+
+const getOrders  = async (userData) => {
+    try{
+        const response = await axios.get(`${API_URL}/user/admin/orders`,{
+            headers: {
+                Authorization: `Bearer ${userData.token}`
+            }
+        })
+        return  response.data
+    }
+    catch (error) {
+        console.error("get order error:", error);
+        throw error;
+    }
+}
+
+
+const updateOrderStatusAPI = async (userData) => {
+    try{
+        await axios.post(`${API_URL}/user/admin/change_order`, userData,{
+            headers: {
+                Authorization: `Bearer ${userData.token}`
+            }
+        });
+    }
+    catch (error) {
+        console.error("Change order error:", error);
+        throw error;
+    }
+}
+
+const delOrder  = async (userData) => {
+    try{
+        const response = await axios.post(`${API_URL}/user/admin/deleted_order`, userData,{
+            headers: {
+                Authorization: `Bearer ${userData.token}`
+            }
+        })
+        return  response.data
+    }
+    catch (error) {
+        console.error("delete order error:", error);
+        throw error;
+    }
+}
+
+export { loginUser, registerUser, fetchUserProfile, addTour, getTours, delTour, editTour, addOrder, getUsers, toggleAdminApi, getOrders, updateOrderStatusAPI,delOrder };
