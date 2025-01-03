@@ -3,6 +3,7 @@ import {useState} from "react";
 import { AppstoreOutlined, SettingOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import AddTour from "./AddTour.jsx";
+import Card from "./Card.jsx";
 const items = [
     {
         key: 'sub1',
@@ -28,16 +29,16 @@ const items = [
     },
     {
         key: 'sub2',
-        label: 'Navigation Two',
+        label: 'User',
         icon: <AppstoreOutlined />,
         children: [
             {
                 key: '5',
-                label: 'Option 5',
+                label: 'User list',
             },
             {
                 key: '6',
-                label: 'Option 6',
+                label: 'Order list',
             },
             {
                 key: 'sub3',
@@ -114,7 +115,7 @@ const Navigation = () => {
             case '1':
                 return <AddTour/>;
             case '2':
-                return <div>Content for "View tours"</div>;
+                return <Card/> ;
             case '5':
                 return <div>Content for "Option 5"</div>;
             case '6':

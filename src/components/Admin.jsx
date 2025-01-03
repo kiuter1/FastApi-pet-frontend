@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react';
-import { Button, Result } from 'antd';
+import { Button, Result,Flex, Spin  } from 'antd';
 import Navigation from "./Navigation.jsx";
 import {AuthContext} from "../contexts/AuthContext.jsx";
 
@@ -15,7 +15,12 @@ const Admin = () => {
     }, [user]);
 
     if (isAdmin === null) {
-        return <div className="flex justify-center items-center">Loading...</div>;
+        return (<div className="flex justify-center items-center">
+            <Flex align="center" gap="middle">
+                <Spin size="large" />
+            </Flex>
+        </div>);
+
     }
 
     if (isAdmin) {

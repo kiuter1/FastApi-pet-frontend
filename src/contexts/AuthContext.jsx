@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {loginUser, fetchUserProfile, registerUser, addTour} from '../api';
+import {loginUser, fetchUserProfile, registerUser, addTour, delTour, editTour, addOrder} from '../api';
 
 const AuthContext = createContext({});
 
@@ -56,8 +56,22 @@ const AuthProvider = ({ children }) => {
     };
 
 
+    const deleteTour = async (id) => {
+        const token = localStorage.getItem('token')
+        return await delTour({id, token});
+    }
+
+    const editedTour = async (id, name, location, description, price, photo) => {
+        const token = localStorage.getItem('token')
+        return await editTour({id, name, location, description, price, photo, token});
+    }
+
+    const addedOrder = async (fullName, contact, people, comments, tour_id) => {
+        const token = localStorage.getItem('token')
+        return await addOrder({fullName, contact, people, comments, tour_id, token});
+    }
     return (
-        <AuthContext.Provider value={{ token, user, login, register, logout, addedTour}}>
+        <AuthContext.Provider value={{ token, user, login, register, logout, addedTour, deleteTour, editedTour, addedOrder }}>
             {children}
         </AuthContext.Provider>
     );
