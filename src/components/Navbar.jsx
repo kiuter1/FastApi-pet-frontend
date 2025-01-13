@@ -1,12 +1,11 @@
-import React, { useContext } from 'react';
-import { Layout, Menu, Button } from 'antd';
-import { Link } from 'react-router-dom'; // Для навигации между страницами
-import { AuthContext } from '../contexts/AuthContext.jsx';
+import React, {useContext} from 'react';
+import {Button, Menu} from 'antd';
+import {Link} from 'react-router-dom';
+import {AuthContext} from '../contexts/AuthContext.jsx';
 
-const { Header } = Layout;
 
 const Navbar = () => {
-    const { isAuthenticated, logout } = useContext(AuthContext); // Получаем статус авторизации
+    const { isAuthenticated, logout } = useContext(AuthContext);
 
     const menuItems = [
         {

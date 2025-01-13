@@ -36,11 +36,12 @@ const fetchUserProfile = async (token) => {
 
 const addTour = async (userData) => {
     try{
-        await axios.post(`${API_URL}/user/admin/added_tour`, userData,{
+        const response = await axios.post(`${API_URL}/user/admin/added_tour`, userData,{
             headers: {
                 Authorization: `Bearer ${userData.token}`
             }
         });
+        return response.data;
     }
     catch (error) {
         console.error("Registration tour error:", error);

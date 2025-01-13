@@ -1,23 +1,21 @@
-import React, { useState, useContext } from 'react';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Flex } from 'antd';
-import { AuthContext } from '../contexts/AuthContext.jsx';
-
-
+import React, {useContext} from 'react';
+import {LockOutlined, UserOutlined} from '@ant-design/icons';
+import {Button, Flex, Form, Input, message} from 'antd';
+import {AuthContext} from '../contexts/AuthContext.jsx';
 
 
 const Login = () => {
-    const [formData, setFormData] = useState({
-        username: '',
-        password: ''
-    });
-
     const { login } = useContext(AuthContext);
 
 
-    const handleSubmit = (values) => {
+    const handleSubmit = async (values) => {
         const { username, password } = values;
-        login(username, password);
+        try {
+            await login(username, password);
+            message.success("Login successful");
+        } catch (error) {
+            message.error(error.response.data.detail);
+        }
     };
 
     return (

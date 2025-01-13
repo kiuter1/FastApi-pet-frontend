@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Table, Switch, Button, Popconfirm } from 'antd';
-import { AuthContext } from '../contexts/AuthContext.jsx';
+import React, {useContext, useEffect, useState} from 'react';
+import {Button, Popconfirm, Switch, Table} from 'antd';
+import {AuthContext} from '../contexts/AuthContext.jsx';
 
 const Orders = () => {
     const [data, setData] = useState([]);
@@ -12,17 +12,15 @@ const Orders = () => {
         },
     });
 
-    // Получаем функции из AuthContext
     const { getOrder, updateOrderStatus, deleteOrder } = useContext(AuthContext);
 
-    // Функция для получения данных заказов
     const fetchData = async () => {
         setLoading(true);
         try {
-            const orders = await getOrder(); // Запрос к API для получения списка заказов
+            const orders = await getOrder();
             setData(
                 orders.map((order) => ({
-                    key: order.id, // Уникальный ключ для каждой строки
+                    key: order.id,
                     fullname: order.fullname,
                     contact: order.contact,
                     comments: order.comments,
@@ -32,7 +30,7 @@ const Orders = () => {
                     tour_name: order.tour.name,
                     tour_location: order.tour.location,
                     tour_price: order.tour.price,
-                    is_done: order.is_done, // Добавляем новое поле is_done
+                    is_done: order.is_done,
                 }))
             );
         } catch (error) {
@@ -42,7 +40,7 @@ const Orders = () => {
         }
     };
 
-    // Загрузка данных при изменении параметров таблицы
+
     useEffect(() => {
         fetchData();
     }, [
@@ -52,7 +50,6 @@ const Orders = () => {
         tableParams.sortField,
     ]);
 
-    // Обработка изменений в таблице
     const handleTableChange = (pagination, filters, sorter) => {
         setTableParams({
             pagination,
@@ -60,16 +57,14 @@ const Orders = () => {
             sortField: sorter?.field,
         });
 
-        // Если размер страницы изменился, сбрасываем данные
         if (pagination.pageSize !== tableParams.pagination?.pageSize) {
             setData([]);
         }
     };
 
-    // Обновление статуса is_done через API
     const handleDoneToggle = async (orderId, isDone) => {
         try {
-            await updateOrderStatus(orderId, isDone); // Запрос для обновления статуса
+            await updateOrderStatus(orderId, isDone);
             setData((prevData) =>
                 prevData.map((order) =>
                     order.key === orderId ? { ...order, is_done: isDone } : order
@@ -80,17 +75,15 @@ const Orders = () => {
         }
     };
 
-    // Удаление заказа
     const handleDelete = async (orderId) => {
         try {
-            await deleteOrder(orderId); // Запрос для удаления заказа
-            setData((prevData) => prevData.filter((order) => order.key !== orderId)); // Удаляем заказ из таблицы
+            await deleteOrder(orderId);
+            setData((prevData) => prevData.filter((order) => order.key !== orderId));
         } catch (error) {
             console.error('Ошибка при удалении заказа:', error);
         }
     };
 
-    // Определение колонок таблицы
     const columns = [
         {
             title: 'Full Name',
@@ -138,7 +131,7 @@ const Orders = () => {
             title: 'Tour Price',
             dataIndex: 'tour_price',
             key: 'tour_price',
-            render: (price) => `$${price.toFixed(2)}`, // Форматируем цену
+            render: (price) => `$${price.toFixed(2)}`,
         },
         {
             title: 'Is Done',
@@ -172,7 +165,7 @@ const Orders = () => {
     return (
         <Table
             columns={columns}
-            rowKey={(record) => record.key} // Уникальный идентификатор строки
+            rowKey={(record) => record.key}
             dataSource={data}
             pagination={tableParams.pagination}
             loading={loading}

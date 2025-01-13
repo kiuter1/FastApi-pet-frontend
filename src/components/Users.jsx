@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Table, Switch } from 'antd';
-import { AuthContext } from '../contexts/AuthContext.jsx';
+import React, {useContext, useEffect, useState} from 'react';
+import {Switch, Table} from 'antd';
+import {AuthContext} from '../contexts/AuthContext.jsx';
 
 const Users = () => {
     const [data, setData] = useState([]);
@@ -12,17 +12,15 @@ const Users = () => {
         },
     });
 
-    // Получаем функции из AuthContext
     const { getUser, toggleAdmin } = useContext(AuthContext);
 
-    // Функция для получения данных пользователей
     const fetchData = async () => {
         setLoading(true);
         try {
-            const users = await getUser(); // Запрос к API для получения списка пользователей
+            const users = await getUser();
             setData(
                 users.map((user) => ({
-                    key: user.id, // Уникальный ключ для каждой строки
+                    key: user.id,
                     name: user.name,
                     email: user.email,
                     is_admin: user.is_admin,
@@ -35,10 +33,9 @@ const Users = () => {
         }
     };
 
-    // Обновление поля is_admin через API
     const handleAdminToggle = async (userId, isAdmin) => {
         try {
-            await toggleAdmin(userId, isAdmin); // Запрос для обновления статуса is_admin
+            await toggleAdmin(userId, isAdmin);
             setData((prevData) =>
                 prevData.map((user) =>
                     user.key === userId ? { ...user, is_admin: isAdmin } : user
@@ -49,7 +46,6 @@ const Users = () => {
         }
     };
 
-    // Загрузка данных при изменении параметров таблицы
     useEffect(() => {
         fetchData();
     }, [
@@ -59,7 +55,6 @@ const Users = () => {
         tableParams.sortField,
     ]);
 
-    // Обработка изменений в таблице
     const handleTableChange = (pagination, filters, sorter) => {
         setTableParams({
             pagination,
@@ -67,13 +62,11 @@ const Users = () => {
             sortField: sorter?.field,
         });
 
-        // Если размер страницы изменился, сбрасываем данные
         if (pagination.pageSize !== tableParams.pagination?.pageSize) {
             setData([]);
         }
     };
 
-    // Определение колонок таблицы
     const columns = [
         {
             title: 'Name',
@@ -104,7 +97,7 @@ const Users = () => {
     return (
         <Table
             columns={columns}
-            rowKey={(record) => record.key} // Уникальный идентификатор строки
+            rowKey={(record) => record.key}
             dataSource={data}
             pagination={tableParams.pagination}
             loading={loading}

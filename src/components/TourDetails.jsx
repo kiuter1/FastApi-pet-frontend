@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Card, Carousel, Button, Modal, message, Form, Input, InputNumber } from 'antd';
-import { LeftOutlined, RightOutlined } from '@ant-design/icons';
-import { AuthContext } from "../contexts/AuthContext.jsx";
+import React, {useContext, useEffect, useRef, useState} from 'react';
+import {Alert, Button, Card, Carousel, Form, Input, InputNumber, message, Modal} from 'antd';
+import {LeftOutlined, RightOutlined} from '@ant-design/icons';
+import {AuthContext} from "../contexts/AuthContext.jsx";
 import {useNavigate} from "react-router-dom";
 
 const { Meta } = Card;
@@ -27,7 +27,7 @@ const TourDetails = ({ tour, onBack }) => {
     };
 
     const handleEdit = () => {
-        let modal; // Для управления закрытием модального окна
+        let modal;
 
         modal = Modal.info({
             title: `Edit Tour "${tour.name}"`,
@@ -46,7 +46,7 @@ const TourDetails = ({ tour, onBack }) => {
                         try {
                             await editedTour(tour.id, values.name, values.location, values.description, values.price, values.photo);
                             message.success(`Tour "${values.name}" has been updated.`);
-                            modal.destroy(); // Закрыть модальное окно
+                            modal.destroy();
                             window.location.reload()
                         } catch (error) {
                             message.error("Failed to update the tour.");
@@ -94,24 +94,24 @@ const TourDetails = ({ tour, onBack }) => {
                         </Button>
                         <Button
                             style={{ marginLeft: '10px' }}
-                            onClick={() => modal.destroy()} // Закрыть модальное окно
+                            onClick={() => modal.destroy()}
                         >
                             Cancel
                         </Button>
                     </Form.Item>
                 </Form>
             ),
-            okButtonProps: { style: { display: 'none' } }, // Убираем стандартную кнопку OK
+            okButtonProps: { style: { display: 'none' } },
         });
     };
 
     const handleBuyTour = () => {
-        if (!token) { // Проверяем, авторизован ли пользователь
+        if (!token) {
             Modal.warning({
                 title: 'You need to log in!',
                 content: 'To purchase this tour, please log in to your account.',
                 onOk: () => {
-                    navigate('/login'); // Перенаправляем на страницу входа
+                    navigate('/login');
                 },
             });
         } else {
@@ -127,8 +127,8 @@ const TourDetails = ({ tour, onBack }) => {
                         onFinish={async (values) => {
                             try {
                                 await addedOrder(values.fullName, values.contact, values.people, values.comments, tour.id);
-                                message.success(`You have successfully purchased the tour "${tour.name}"!`);
-                                modal.destroy(); // Закрыть модальное окно
+                                message.success(`You have successfully booked the "${tour.name}" tour! You will be contacted soon `);
+                                modal.destroy();
                             } catch (error) {
                                 message.error("Failed to complete the purchase.");
                             }
@@ -174,14 +174,14 @@ const TourDetails = ({ tour, onBack }) => {
                             </Button>
                             <Button
                                 style={{ marginLeft: '10px' }}
-                                onClick={() => modal.destroy()} // Закрыть модальное окно
+                                onClick={() => modal.destroy()}
                             >
                                 Cancel
                             </Button>
                         </Form.Item>
                     </Form>
                 ),
-                okButtonProps: { style: { display: 'none' } }, // Убираем стандартную кнопку OK
+                okButtonProps: { style: { display: 'none' } },
             });
         };
     }
@@ -206,6 +206,7 @@ const TourDetails = ({ tour, onBack }) => {
 
     return (
         <div style={{ padding: "20px" }}>
+            <Alert message="The price of the tour will vary based on the date of booking and the number of people on the tour" type="info" />
             <Card
                 hoverable
                 style={{ maxWidth: 600, margin: "0 auto", position: "relative" }}

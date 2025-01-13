@@ -1,6 +1,19 @@
-import React, { createContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {loginUser, fetchUserProfile, registerUser, addTour, delTour, editTour, addOrder, getUsers, toggleAdminApi, getOrders, updateOrderStatusAPI, delOrder} from '../api';
+import React, {createContext, useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {
+    addOrder,
+    addTour,
+    delOrder,
+    delTour,
+    editTour,
+    fetchUserProfile,
+    getOrders,
+    getUsers,
+    loginUser,
+    registerUser,
+    toggleAdminApi,
+    updateOrderStatusAPI
+} from '../api';
 
 const AuthContext = createContext({});
 
@@ -63,9 +76,8 @@ const AuthProvider = ({ children }) => {
 
     const addedTour = async (name, location, description, price, photo) => {
         const token = localStorage.getItem('token')
-        const error =  addTour({ name, location, description, price, photo, token });
-        if (error) return error;
-        navigate('/admin');
+        const response = await addTour({ name, location, description, price, photo, token });
+        return response;
 
     };
 

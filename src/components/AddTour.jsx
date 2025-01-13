@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
-import { Button, Upload, Form, Input, InputNumber } from 'antd';
-import { InboxOutlined } from '@ant-design/icons';
-import { AuthContext } from '../contexts/AuthContext.jsx';
+import {Button, Form, Input, InputNumber, message, Upload} from 'antd';
+import {InboxOutlined} from '@ant-design/icons';
+import {AuthContext} from '../contexts/AuthContext.jsx';
 
 
 const onFinishFailed = (errorInfo) => {
@@ -20,12 +20,13 @@ const AddTour = () => {
         return e;
     };
 
-    const onFinish = (values) => {
+    const onFinish = async (values) => {
         const { name, location, description, price, photo } = values;
         try {
-            const response = addedTour(name, location, description, price, photo.fileList);
-        } catch (response) {
-            console.log("form AddTour.jsx" + response);
+            const response = await addedTour(name, location, description, price, photo.fileList);
+            message.success(response.message);
+        } catch (error) {
+            message.error(error.response.data.detail);
         }
     };
     return (

@@ -1,14 +1,9 @@
-import React, { useState, useContext } from 'react';
+import React, {useContext} from 'react';
 
-import {
-    Button,
-    Form,
-    Input,
-    Select,
-    notification,
-} from 'antd';
-import { AuthContext } from '../contexts/AuthContext.jsx';
-const { Option } = Select;
+import {Button, Form, Input, message,} from 'antd';
+import {AuthContext} from '../contexts/AuthContext.jsx';
+import {useNavigate} from "react-router-dom";
+
 const formItemLayout = {
     labelCol: {
         xs: {
@@ -40,75 +35,21 @@ const tailFormItemLayout = {
     },
 };
 const Registration = () => {
-    const [api, contextHolder] = notification.useNotification();
-    const openNotification = (placement) => {
-        api.info({
-            message: `Notification ${placement}`,
-            description:
-                'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
-            placement,
-        });
-    };
-
-
-    const [formData, setFormData] = useState({
-        username: '',
-        email: '',
-        password: ''
-    });
-
     const { register } = useContext(AuthContext);
+    const navigate = useNavigate();
 
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-    const handleSubmit = (values) => {
+    const handleSubmit = async (values) => {
         const { username, email, password } = values;
         try {
-            const error = register(username, email, password);
+            await register(username, email, password);
+            message.success("Registration successful");
+            navigate("/login")
         } catch (error) {
-            console.log("form Reg.js" + error);
+            message.error(error.response.data.detail);
         }
     };
 
     const [form] = Form.useForm();
-    const onFinish = (values) => {
-
-        console.log('Received values of form: ', values);
-    };
-    const prefixSelector = (
-        <Form.Item name="prefix" noStyle>
-            <Select
-                style={{
-                    width: 70,
-                }}
-            >
-                <Option value="86">+86</Option>
-                <Option value="87">+87</Option>
-            </Select>
-        </Form.Item>
-    );
-    const suffixSelector = (
-        <Form.Item name="suffix" noStyle>
-            <Select
-                style={{
-                    width: 70,
-                }}
-            >
-                <Option value="USD">$</Option>
-                <Option value="CNY">¥</Option>
-            </Select>
-        </Form.Item>
-    );
-    const [autoCompleteResult, setAutoCompleteResult] = useState([]);
-    const onWebsiteChange = (value) => {
-        if (!value) {
-            setAutoCompleteResult([]);
-        } else {
-            setAutoCompleteResult(['.com', '.org', '.net'].map((domain) => `${value}${domain}`));
-        }
-    };
 return (
         <div>
             <div className="flex justify-center items-center">

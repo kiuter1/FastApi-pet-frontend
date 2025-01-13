@@ -1,11 +1,11 @@
-import React from 'react';
-import {useState} from "react";
-import { AppstoreOutlined, SettingOutlined } from '@ant-design/icons';
-import { Menu } from 'antd';
+import React, {useState} from 'react';
+import {AppstoreOutlined} from '@ant-design/icons';
+import {Menu} from 'antd';
 import AddTour from "./AddTour.jsx";
 import Card from "./Card.jsx";
 import Users from "./Users.jsx";
 import Orders from "./Orders.jsx";
+
 const items = [
     {
         key: 'sub1',
@@ -42,61 +42,6 @@ const items = [
                 key: '6',
                 label: 'Order list',
             },
-            {
-                key: 'sub3',
-                label: 'Submenu',
-                children: [
-                    {
-                        key: '7',
-                        label: 'Option 7',
-                    },
-                    {
-                        key: '8',
-                        label: 'Option 8',
-                    },
-                ],
-            },
-        ],
-    },
-    {
-        type: 'divider',
-    },
-    {
-        key: 'sub4',
-        label: 'Navigation Three',
-        icon: <SettingOutlined />,
-        children: [
-            {
-                key: '9',
-                label: 'Option 9',
-            },
-            {
-                key: '10',
-                label: 'Option 10',
-            },
-            {
-                key: '11',
-                label: 'Option 11',
-            },
-            {
-                key: '12',
-                label: 'Option 12',
-            },
-        ],
-    },
-    {
-        key: 'grp',
-        label: 'Group',
-        type: 'group',
-        children: [
-            {
-                key: '13',
-                label: 'Option 13',
-            },
-            {
-                key: '14',
-                label: 'Option 14',
-            },
         ],
     },
 ];
@@ -105,13 +50,12 @@ const Navigation = () => {
 
 
 
-    const [selectedKey, setSelectedKey] = useState('1'); // Состояние для хранения выбранного ключа
+    const [selectedKey, setSelectedKey] = useState('1');
 
     const onClick = (e) => {
-        setSelectedKey(e.key); // Устанавливаем ключ при клике
+        setSelectedKey(e.key);
     };
 
-    // Содержимое для отображения
     const renderContent = () => {
         switch (selectedKey) {
             case '1':
@@ -122,12 +66,6 @@ const Navigation = () => {
                 return <Users/>;
             case '6':
                 return <Orders/>;
-            case '7':
-                return <div>Content for "Option 7"</div>;
-            case '8':
-                return <div>Content for "Option 8"</div>;
-            default:
-                return <div>Select an option</div>;
         }
     };
 
