@@ -7,7 +7,7 @@ FastApi-pet-frontend - is a frontend application developed using React and Vite,
 - React
 - Vite
 - Tailwind CSS
-- ESLint
+- And Design
 
 **Setup and startup:**
 1. Clone the repository:
