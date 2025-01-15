@@ -3,6 +3,7 @@
 ## Description
 FastApi-pet-frontend - is a frontend application developed using React and Vite, designed to interact with the backend on FastAPI.
 I'm not a frontend developer!!!
+
 **Technologies used:**
 - React
 - Vite
