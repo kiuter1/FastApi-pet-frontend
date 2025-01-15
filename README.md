@@ -1,8 +1,22 @@
-# React + Vite
+# FastApi-pet-frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Description
+FastApi-pet-frontend - is a frontend application developed using React and Vite, designed to interact with the backend on FastAPI.
 
-Currently, two official plugins are available:
+**Technologies used:**
+- React
+- Vite
+- Tailwind CSS
+- ESLint
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**Setup and startup:**
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/kiuter1/FastApi-pet-frontend.git
+   cd FastApi-pet-frontend
+2. Establish Dependencies:
+   ```bash
+   npm install
+3. Start the application:
+   ```bash
+   npm run dev
